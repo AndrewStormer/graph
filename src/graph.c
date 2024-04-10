@@ -1,9 +1,8 @@
-#include "graph.h"
-#include "mst.h"
-#include "bfs.h"
-#include "dfs.h"
-#include "dijkstra.h"
-#include "bellmanford.h"
+#include "../include/mst.h"
+#include "../include/bfs.h"
+#include "../include/dfs.h"
+#include "../include/dijkstra.h"
+#include "../include/bellmanford.h"
 
 
 void decoderelationstring(char *buffer, int *from, int *to, float *weight) {

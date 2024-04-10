@@ -1,4 +1,4 @@
-#include "dijkstra.h"
+#include "../include/dijkstra.h"
 
 
 Node * relax(Node * minheap, Adjacency * adjacency, Node * u, Node * v) {

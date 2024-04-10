@@ -5,6 +5,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
+#include <stddef.h>
+#include <stdbool.h>
+
+#ifndef __null
+#define __null ((char *)0)
+#endif
 
 #define INT_MAX 2147483647
 

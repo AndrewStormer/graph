@@ -1,4 +1,4 @@
-#include "bfs.h"
+#include "../include/bfs.h"
 
 
 QNode * createqnode(BFSNode * v) {

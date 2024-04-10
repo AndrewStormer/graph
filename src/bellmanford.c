@@ -1,4 +1,4 @@
-#include "bellmanford.h"
+#include "../include/bellmanford.h"
 
 
 Node * bellmanford(Vertex * vertices, int vertexcount, int source, bool * negativeloopcycle) {

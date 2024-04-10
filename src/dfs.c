@@ -1,4 +1,4 @@
-#include "dfs.h"
+#include "../include/dfs.h"
 
 
 DFSNode * initdfsnodes(Vertex * vertices, int vertexcount) {

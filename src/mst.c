@@ -1,4 +1,4 @@
-#include "mst.h"
+#include "../include/mst.h"
 
 
 //Min Heap functions
