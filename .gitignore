@@ -1,2 +1,8 @@
 *.o
 .DS_Store
+*/CMakeFiles/
+*.cmake
+libgraph.dylib
+main
+*/.vscode/
+

@@ -2,4 +2,4 @@
 #include "dijkstra.h"
 
 
-Node * bellmanford(Vertex * vertices, int vertexcount, int source, bool * negativeloopcycle);
+Node * bellmanford(Vertex * vertices, int vertexcount, int source, int * negativeloopcycle);

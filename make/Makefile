@@ -48,10 +48,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /Applications/CMake.app/Contents/bin/cmake
+CMAKE_COMMAND = /private/var/folders/_2/2qyjjjls07ggxskprqny8cgc0000gn/T/AppTranslocation/B8F215DC-8BCA-4C1C-B008-3B7567C89BBB/d/CMake.app/Contents/bin/cmake
 
 # The command to remove a file.
-RM = /Applications/CMake.app/Contents/bin/cmake -E rm -f
+RM = /private/var/folders/_2/2qyjjjls07ggxskprqny8cgc0000gn/T/AppTranslocation/B8F215DC-8BCA-4C1C-B008-3B7567C89BBB/d/CMake.app/Contents/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -68,7 +68,7 @@ CMAKE_BINARY_DIR = /Users/andrewstormer/Documents/GitHub/graph/build
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
-	/Applications/CMake.app/Contents/bin/cmake-gui -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/private/var/folders/_2/2qyjjjls07ggxskprqny8cgc0000gn/T/AppTranslocation/B8F215DC-8BCA-4C1C-B008-3B7567C89BBB/d/CMake.app/Contents/bin/cmake-gui -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -78,7 +78,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake to regenerate build system..."
-	/Applications/CMake.app/Contents/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/private/var/folders/_2/2qyjjjls07ggxskprqny8cgc0000gn/T/AppTranslocation/B8F215DC-8BCA-4C1C-B008-3B7567C89BBB/d/CMake.app/Contents/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -117,61 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named graph
+# Target rules for targets named assignment4
 
 # Build rule for target.
-graph: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 graph
-.PHONY : graph
+assignment4: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 assignment4
+.PHONY : assignment4
 
 # fast build rule for target.
-graph/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/graph.dir/build.make CMakeFiles/graph.dir/build
-.PHONY : graph/fast
-
-#=============================================================================
-# Target rules for targets named main
-
-# Build rule for target.
-main: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 main
-.PHONY : main
-
-# fast build rule for target.
-main/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
-.PHONY : main/fast
-
-src/graph.o: src/graph.c.o
-.PHONY : src/graph.o
-
-# target to build an object file
-src/graph.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/graph.dir/build.make CMakeFiles/graph.dir/src/graph.c.o
-.PHONY : src/graph.c.o
-
-src/graph.i: src/graph.c.i
-.PHONY : src/graph.i
-
-# target to preprocess a source file
-src/graph.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/graph.dir/build.make CMakeFiles/graph.dir/src/graph.c.i
-.PHONY : src/graph.c.i
-
-src/graph.s: src/graph.c.s
-.PHONY : src/graph.s
-
-# target to generate assembly for a file
-src/graph.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/graph.dir/build.make CMakeFiles/graph.dir/src/graph.c.s
-.PHONY : src/graph.c.s
+assignment4/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/assignment4.dir/build.make CMakeFiles/assignment4.dir/build
+.PHONY : assignment4/fast
 
 src/main.o: src/main.c.o
 .PHONY : src/main.o
 
 # target to build an object file
 src/main.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/main.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/assignment4.dir/build.make CMakeFiles/assignment4.dir/src/main.c.o
 .PHONY : src/main.c.o
 
 src/main.i: src/main.c.i
@@ -179,7 +142,7 @@ src/main.i: src/main.c.i
 
 # target to preprocess a source file
 src/main.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/main.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/assignment4.dir/build.make CMakeFiles/assignment4.dir/src/main.c.i
 .PHONY : src/main.c.i
 
 src/main.s: src/main.c.s
@@ -187,7 +150,7 @@ src/main.s: src/main.c.s
 
 # target to generate assembly for a file
 src/main.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/main.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/assignment4.dir/build.make CMakeFiles/assignment4.dir/src/main.c.s
 .PHONY : src/main.c.s
 
 # Help Target
@@ -198,11 +161,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... graph"
-	@echo "... main"
-	@echo "... src/graph.o"
-	@echo "... src/graph.i"
-	@echo "... src/graph.s"
+	@echo "... assignment4"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

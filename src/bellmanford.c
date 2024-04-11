@@ -1,7 +1,7 @@
 #include "../include/bellmanford.h"
 
 
-Node * bellmanford(Vertex * vertices, int vertexcount, int source, bool * negativeloopcycle) {
+Node * bellmanford(Vertex * vertices, int vertexcount, int source, int * negativeloopcycle) {
     printf("Bellmanford start\n");
     Node * shortestpath = malloc(sizeof(Node)*vertexcount);
     for (int i = 0; i < vertexcount; i++) {
@@ -26,7 +26,7 @@ Node * bellmanford(Vertex * vertices, int vertexcount, int source, bool * negati
             u = getNode(shortestpath, vertexcount, (vertices + (cursor->edge->from-1)*sizeof(Vertex)));
             v = getNode(shortestpath, vertexcount, (vertices + (cursor->edge->to-1)*sizeof(Vertex)));
             if (v->key > u->key + cursor->edge->weight || cursor->edge->weight < 0) {
-                *negativeloopcycle = false;
+                *negativeloopcycle = 0;
             }
             cursor = cursor->next;
         }

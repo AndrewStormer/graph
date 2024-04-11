@@ -1,14 +1,11 @@
 #include "../include/graph.h"
 
 
-int main(int argc, const char * argv[]) {
-    FILE *fp;
-    if ((fp = fopen("vertexlist.txt", "r")) != NULL) {
-        rungraphalgorithms(fp);
-    } else {
-        printf("Something went wrong opening your file.");
-        exit(1);
-    }
-    fclose(fp);
+int main(void) {
+    int vertex_count = 0;
+    int edge_count = 0;
+    Vertex *graph = directed_graph_initialize("vertexlist.txt", &vertex_count, &edge_count);
+    graphwalk(graph, vertex_count);
+
     return 0;
 }

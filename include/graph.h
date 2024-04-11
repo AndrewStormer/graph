@@ -6,7 +6,6 @@
 #include <stdbool.h>
 #include <math.h>
 #include <stddef.h>
-#include <stdbool.h>
 
 #ifndef __null
 #define __null ((char *)0)
@@ -20,7 +19,8 @@
 
 
 typedef struct estruct {
-    int from, to;
+    int from;
+    int to;
     float weight;
 } Edge;
 
@@ -36,7 +36,10 @@ typedef struct vstruct {
     Adjacency * list;
 } Vertex;
 
-void rungraphalgorithms(FILE * fp);
+Vertex *directed_graph_initialize(char *filename, int *vertex_count, int *edge_count);
+Vertex *undirected_graph_initialize(char *filename, int *vertex_count, int *edge_count);
+
+
 void graphwalk(Vertex * graph, int vertexcount);
 
 #endif

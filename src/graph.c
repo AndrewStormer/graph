@@ -1,3 +1,5 @@
+#include "../include/graph.h"
+
 #include "../include/mst.h"
 #include "../include/bfs.h"
 #include "../include/dfs.h"
@@ -28,7 +30,10 @@ void decoderelationstring(char *buffer, int *from, int *to, float *weight) {
 
 
 Edge * createedge(int from, int to, float weight) {
-    Edge * edge = malloc(sizeof(Edge)); if (!edge) return NULL;
+    Edge * edge = malloc(sizeof(Edge)); 
+    if (!edge) 
+        return NULL;
+
     edge->from = from;
     edge->to = to;
     edge->weight = weight;
@@ -38,7 +43,10 @@ Edge * createedge(int from, int to, float weight) {
 
 
 Adjacency * createadjacency(Edge * edge) {
-    Adjacency * adjacency = malloc(sizeof(Adjacency)); if (!adjacency) return NULL;
+    Adjacency * adjacency = malloc(sizeof(Adjacency)); 
+    if (!adjacency) 
+        return NULL;
+
     adjacency->edge = edge;
     adjacency->next = NULL;
 
@@ -47,24 +55,33 @@ Adjacency * createadjacency(Edge * edge) {
 
 
 Adjacency * insertadjacency(Adjacency * list, Adjacency * newadjacency) {
-    if (!list) {
-        return newadjacency;
-    } else {
-        Adjacency * cursor = list;
+    if (!newadjacency)
+        return NULL;
 
-        while (cursor->next) {
-            cursor = cursor->next;
-        }
-        cursor->next = newadjacency;
-        return list;
+    if (!list) {
+        list = newadjacency;
+        return newadjacency;
     }
+    
+    Adjacency * cursor = list;
+
+    while (cursor->next) {
+        cursor = cursor->next;
+    }
+    cursor->next = newadjacency;
+    return list;
 }
 
 
 Vertex * initializevertices(int vertexcount) {
-    Vertex * vertices = malloc(sizeof(Vertex)*vertexcount); if (!vertices) return NULL;
+    if (vertexcount < 0)
+        return NULL;
 
-    for (int i = 0; i < vertexcount; i++) {
+    Vertex * vertices = malloc(sizeof(Vertex)*vertexcount); 
+    if (!vertices)
+        return NULL;
+
+    for (int i = 0; i < vertexcount; ++i) {
         (vertices + i*sizeof(Vertex))->number = i+1;
         (vertices + i*sizeof(Vertex))->list = NULL;
     }
@@ -72,18 +89,34 @@ Vertex * initializevertices(int vertexcount) {
 }
 
 
-Vertex * createdirectedgraph(int vertexcount, int edgecount, int from[], int to[], float weight[]) {
-    Vertex * vertices = initializevertices(vertexcount); if (!vertices) return NULL;
-    Vertex * sourcevertex = NULL;
-    Edge * adjacentedge = NULL;
-    Adjacency * newadjacency = NULL;
+Vertex * createdirectedgraph(int vertexcount, int edgecount, int *from, int *to, float *weight) {
+    if (vertexcount < 0 || !from || !to || !weight)
+        return NULL;
+    Vertex *vertices = initializevertices(vertexcount); 
+    if (!vertices) 
+        return NULL;
+    Vertex *sourcevertex = NULL;
+    Edge *adjacentedge = NULL;
+    Adjacency *newadjacency = NULL;
 
     for (int i = 0; i < edgecount; i++) {
-        adjacentedge = createedge(from[i], to[i], weight[i]); if (!adjacentedge) return NULL;
-        newadjacency = createadjacency(adjacentedge); if (!newadjacency) return NULL;
+        adjacentedge = createedge(from[i], to[i], weight[i]);
+        if (!adjacentedge)  {
+            free(vertices);
+            return NULL;
+        }
+        newadjacency = createadjacency(adjacentedge); 
+        if (!newadjacency)   {
+            free(vertices);
+            return NULL;
+        }
 
         sourcevertex = (vertices + (from[i]-1)*sizeof(Vertex));
         sourcevertex->list = insertadjacency(sourcevertex->list, newadjacency);
+        if (!sourcevertex->list)  {
+            free(vertices);
+            return NULL;
+        }
     }
     return vertices;
 }
@@ -91,52 +124,133 @@ Vertex * createdirectedgraph(int vertexcount, int edgecount, int from[], int to[
 
 Vertex * createundirectedgraph(int vertexcount, int edgecount, int from[], int to[], float weight[]) {
     Vertex * vertices = initializevertices(vertexcount);
-    Vertex * sourcevertex = NULL, * sinkvertex = NULL;
-    Edge * adjacentedge1 = NULL, * adjacentedge2 = NULL;
-    Adjacency * newadjacency1 = NULL, * newadjacency2 = NULL;
+    Vertex * sourcevertex = NULL;
+    Vertex * sinkvertex = NULL;
+    Edge * adjacentedge1 = NULL;
+    Edge * adjacentedge2 = NULL;
+    Adjacency * newadjacency1 = NULL;
+    Adjacency * newadjacency2 = NULL;
 
     for (int i = 0; i < edgecount; i++) {
-        adjacentedge1 = createedge(from[i], to[i], weight[i]); if (!adjacentedge1) return NULL;
-        newadjacency1 = createadjacency(adjacentedge1); if (!newadjacency1) return NULL;
-        adjacentedge2 = createedge(from[i], to[i], weight[i]); if (!adjacentedge2) return NULL;
-        newadjacency2 = createadjacency(adjacentedge1); if (!newadjacency2) return NULL;
+        adjacentedge1 = createedge(from[i], to[i], weight[i]);
+        if (!adjacentedge1) {
+            free(vertices);
+            return NULL;
+        }
+
+        newadjacency1 = createadjacency(adjacentedge1); 
+        if (!newadjacency1) {
+            free(vertices);
+            return NULL;
+        }
+
+        adjacentedge2 = createedge(from[i], to[i], weight[i]); 
+        if (!adjacentedge2) {
+            free(vertices);
+            return NULL;
+        }
+
+        newadjacency2 = createadjacency(adjacentedge1); 
+        if (!newadjacency2) {
+            free(vertices);
+            return NULL;
+        }
 
         sourcevertex = (vertices + (from[i]-1)*sizeof(Vertex));
         sourcevertex->list = insertadjacency(sourcevertex->list, newadjacency1);
+        if (!sourcevertex->list) {
+            free(vertices);
+            return NULL;
+        }
+
         sinkvertex = (vertices + (to[i]-1)*sizeof(Vertex));
         sinkvertex->list = insertadjacency(sinkvertex->list, newadjacency2);
+        if (!sinkvertex->list) {
+            free(vertices);
+            return NULL;
+        }
     }
     return vertices;
 }
 
 
+Vertex *directed_graph_initialize(char *filename, int *vertex_count, int *edge_count) {
+    if (!filename || strlen(filename) == 0 || !vertex_count || !edge_count)
+        return NULL;
 
-void rungraphalgorithms(FILE * fp) {
-    int vertexcount, edgecount, from = 0, to = 0, index = 0; char * line = NULL; size_t linesize = 0; float weight = 0.0;
-    fscanf(fp, "%d", &vertexcount);
-    fscanf(fp, "%d", &edgecount);
-
-    int * fromarr = malloc(sizeof(int)*edgecount); if (!fromarr) exit(1);
-    int * toarr = malloc(sizeof(int)*edgecount); if (!toarr) exit(1);
-    float * weightarr = malloc(sizeof(float)*edgecount); if (!weightarr) exit(1);
-
-    getline(&line, &linesize, fp);
-    while(getline(&line, &linesize, fp) != -1 && index < edgecount) {
-        decoderelationstring(line, &from, &to, &weight);
-        printf("%d->%d(%f)\n", from, to , weight);
-        fromarr[index] = from; toarr[index] = to; weightarr[index] = weight;
-        index++;
+    FILE *fp = fopen(filename, "r");
+    if (!fp) {
+        return NULL;
     }
 
-    Vertex * directedgraph = createdirectedgraph(vertexcount, edgecount, fromarr, toarr, weightarr); if (!directedgraph) { printf("createdirectedgraph function call failed!\n"); exit(1);}
-    Vertex * undirectedgraph = createundirectedgraph(vertexcount, edgecount, fromarr, toarr, weightarr); if (!undirectedgraph) { printf("createundirectedgraph function call failed!\n"); exit(1);}
+    fscanf(fp, "%d", vertex_count);
+    if (!vertex_count)
+        return NULL;
+    fscanf(fp, "%d", edge_count);
+    if (!edge_count)
+        return NULL;
 
-    BFS(undirectedgraph, vertexcount, 1); //Breadth first search of either a directed or undirected graph
-    DFS(undirectedgraph, vertexcount); //Depth first search of either a directed or undirext graph
-    //MST_Prim(undirectedgraph, 1, vertexcount); //Creates a Minimum Spanning Tree on the undirected graph
-    dijkstra(directedgraph, vertexcount, 1); //Finds all shorts paths from the each vertex to the source
-    bool negativeweightcycle = true;
-    bellmanford(directedgraph, vertexcount, 1, &negativeweightcycle);
+    char *line = NULL;
+    size_t linesize;
+    int *from = malloc((*edge_count+1)*sizeof(int));
+    int *to = malloc((*edge_count+1)*sizeof(int));
+    float *weight = malloc((*edge_count+1)*sizeof(float));
+
+    int index = 0;
+
+    getline(&line, &linesize, fp);
+    while((getline(&line, &linesize, fp) != -1) && index < *edge_count) {
+        decoderelationstring(line, &from[index], &to[index], &weight[index]);
+        printf("%d->%d (%f)\n", from[index], to[index], weight[index]);
+        ++index;
+    }
+    Vertex * graph = createdirectedgraph(*vertex_count, *edge_count, from, to, weight);
+    if (!graph)
+        return NULL;
+    free(from);
+    free(to);
+    free(weight);
+    return graph;
+}
+
+
+Vertex *undirected_graph_initialize(char *filename, int *vertex_count, int *edge_count) {
+    if (!filename || strlen(filename) == 0 || !vertex_count || !edge_count)
+        return NULL;
+
+    FILE *fp = fopen(filename, "r");
+    if (!fp) {
+        return NULL;
+    }
+
+    fscanf(fp, "%d", vertex_count);
+    if (!vertex_count)
+        return NULL;
+    fscanf(fp, "%d", edge_count);
+    if (!edge_count)
+        return NULL;
+
+    char *line = NULL;
+    size_t linesize;
+    int *from = malloc((*edge_count+1)*sizeof(int));
+    int *to = malloc((*edge_count+1)*sizeof(int));
+    float *weight = malloc((*edge_count+1)*sizeof(float));
+
+    int index = 0;
+
+    getline(&line, &linesize, fp);
+    while((getline(&line, &linesize, fp) != -1) && index < *edge_count) {
+        decoderelationstring(line, &from[index], &to[index], &weight[index]);
+        printf("%d->%d (%f)\n", from[index], to[index], weight[index]);
+        ++index;
+    }
+    Vertex * graph = createundirectedgraph(*vertex_count, *edge_count, from, to, weight);
+    if (!graph)
+        return NULL;
+    free(from);
+    free(to);
+    free(weight);
+    return graph;
 }
 
 
