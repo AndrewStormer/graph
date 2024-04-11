@@ -7,5 +7,7 @@ int main(void) {
     Vertex *graph = directed_graph_initialize("vertexlist.txt", &vertex_count, &edge_count);
     graphwalk(graph, vertex_count);
 
+    dijkstra(graph, vertex_count, 1);
+
     return 0;
 }

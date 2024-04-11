@@ -7,6 +7,14 @@
 #include <math.h>
 #include <stddef.h>
 
+
+#include "mst.h"
+#include "bfs.h"
+#include "dfs.h"
+#include "dijkstra.h"
+#include "bellmanford.h"
+
+
 #ifndef __null
 #define __null ((char *)0)
 #endif
