@@ -23,8 +23,8 @@ Node * bellmanford(Vertex * vertices, int vertexcount, int source, int * negativ
     for (int i = 0; i < vertexcount; i++) {
         cursor = (vertices + i*sizeof(Vertex))->list;
         while (cursor) {
-            u = getNode(shortestpath, vertexcount, (vertices + (cursor->edge->from-1)*sizeof(Vertex)));
-            v = getNode(shortestpath, vertexcount, (vertices + (cursor->edge->to-1)*sizeof(Vertex)));
+            u = get_node(shortestpath, vertexcount, (vertices + (cursor->edge->from-1)*sizeof(Vertex)));
+            v = get_node(shortestpath, vertexcount, (vertices + (cursor->edge->to-1)*sizeof(Vertex)));
             if (v->key > u->key + cursor->edge->weight || cursor->edge->weight < 0) {
                 *negativeloopcycle = 0;
             }

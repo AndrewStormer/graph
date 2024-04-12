@@ -2,6 +2,10 @@
 #define _mst_h
 #include "graph.h"
 
+typedef struct estruct Edge;
+typedef struct astruct Adjacency;
+typedef struct vstruct Vertex;
+
 //Tree
 typedef struct nstruct {
     float key;

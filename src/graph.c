@@ -1,9 +1,5 @@
 #include "../include/graph.h"
 
-typedef struct estruct Edge;
-typedef struct astruct Adjacency;
-typedef struct vstruct Vertex;
-
 
 void decoderelationstring(char *buffer, int *from, int *to, float *weight) {
     const char delim[] = " ";

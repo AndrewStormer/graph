@@ -1,6 +1,4 @@
 #include "../include/mst.h"
-#include "../include/graph.h"
-
 
 
 //Min Heap functions
@@ -45,6 +43,8 @@ Node * extract_min(Node * minHeap, int * heapSize) {
 
 //Utility Functions
 Vertex * get_vertex(Vertex * vertices, int countVertices, int edgeNumber) {
+    if (edgeNumber > countVertices)
+        return NULL;
     return (vertices + edgeNumber*sizeof(Vertex));
 }
 

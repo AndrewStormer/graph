@@ -1,7 +1,7 @@
 *.o
 .DS_Store
 */CMakeFiles/
-libgraph.dylib
+*.dylib
 main
 */.vscode/
 build/CMakeCache.txt

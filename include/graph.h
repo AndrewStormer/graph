@@ -1,18 +1,13 @@
 #ifndef _graph_h
 #define _graph_h
+
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
 #include <stddef.h>
-
-
-#include "mst.h"
-#include "bfs.h"
-#include "dfs.h"
-#include "dijkstra.h"
-#include "bellmanford.h"
 
 
 #ifndef __null
