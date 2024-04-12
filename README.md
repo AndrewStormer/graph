@@ -26,6 +26,6 @@ mkdir build && cd build
 int main(void) {
     int vertex_count;
     int edge_count;
-    Vertex *graph = directed_graph_initalize("vertexlist.txt", &vertex_count, &edge_count);
+    vertex_t *graph = directed_graph_initalize("vertexlist.txt", &vertex_count, &edge_count);
 }
 ```

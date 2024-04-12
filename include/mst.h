@@ -2,24 +2,24 @@
 #define _mst_h
 #include "graph.h"
 
-typedef struct estruct Edge;
-typedef struct astruct Adjacency;
-typedef struct vstruct Vertex;
+typedef struct estruct edge_t;
+typedef struct astruct adjacency_t;
+typedef struct vstruct vertex_t;
 
 //Tree
 typedef struct nstruct {
     float key;
-    Vertex *v;
+    vertex_t *v;
     struct nstruct *p;
-} Node;
+} node_t;
 
 
-void node_swap(Node *node1, Node *node2);
-void heapify(Node *minHeap, int index, int size);
-void build_heap(Node *minHeap, int size);
-Node *extract_min(Node *minHeap, int *heapSize);
-Node *set_all_adjacent_vertices(Node *minHeap, Node *currentVertex, int heapSize, Vertex *vertices, int countVertices);
-Node *get_node(Node *minHeap, int heapSize, Vertex *adjVertex);
+void node_swap(node_t *node1, node_t *node2);
+void heapify(node_t *minHeap, int index, int size);
+void build_heap(node_t *minHeap, int size);
+node_t *extract_min(node_t *minHeap, int *heapSize);
+node_t *set_all_adjacent_vertices(node_t *minHeap, node_t *currentVertex, int heapSize, vertex_t *vertices, int countVertices);
+node_t *get_node(node_t *minHeap, int heapSize, vertex_t *adjVertex);
 
-void MST_Prim(Vertex *vertices, int startnumber, int countvertices);
+node_t *MST_Prim(graph_t *g, int startnumber);
 #endif

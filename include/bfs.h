@@ -7,18 +7,18 @@
 //DFS tree
 typedef struct bfsnstruct {
     int d, color;
-    Vertex * v;
-    struct bfsnstruct * p;
-} BFSNode;
+    vertex_t *v;
+    struct bfsnstruct *p;
+} bfsnode_t;
 
 
 typedef struct qnstruct {
-    BFSNode * v;
-    struct qnstruct * next;
-} QNode;
+    bfsnode_t *v;
+    struct qnstruct *next;
+} qnode_t;
 
 
-BFSNode * BFS(Vertex * vertices, int vertexcount, int startnumber);
+bfsnode_t *BFS(graph_t *g, int startnumber);
 
 
 #endif

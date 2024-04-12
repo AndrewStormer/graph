@@ -2,29 +2,29 @@
 
 
 //Min Heap functions
-void node_swap(Node * node1, Node * node2) {
-    Node temp = *node1;
+void node_swap(node_t *node1, node_t *node2) {
+    node_t temp = *node1;
     *node1 = *node2;
     *node2 = temp;
 }
 
 
-void heapify(Node * minHeap, int index, int size) {
+void heapify(node_t *minHeap, int index, int size) {
     int left = 2*index + 1, right = 2*index + 2, min = index;
     
-    if (size > left && ((minHeap + sizeof(Node)*left)->key < (minHeap + sizeof(Node)*min)->key))
+    if (size > left && ((minHeap + sizeof(node_t)*left)->key < (minHeap + sizeof(node_t)*min)->key))
         min = left;
-    if (size > right && ((minHeap + sizeof(Node)*right)->key < (minHeap + sizeof(Node)*min)->key))
+    if (size > right && ((minHeap + sizeof(node_t)*right)->key < (minHeap + sizeof(node_t)*min)->key))
         min = right;
     
     if (min != index) {
-        node_swap((minHeap + sizeof(Node)*min), (minHeap + sizeof(Node)*index));
+        node_swap((minHeap + sizeof(node_t)*min), (minHeap + sizeof(node_t)*index));
         heapify(minHeap, min, size);
     }
 }
 
 
-void build_heap(Node * minHeap, int size) {
+void build_heap(node_t *minHeap, int size) {
     int startNumber = (size/2);
     for (int i = startNumber; i >= 0; i--) {
         heapify(minHeap, i, size);
@@ -33,25 +33,25 @@ void build_heap(Node * minHeap, int size) {
 
 
 //returns minumum elements of heap and decreases heapSize
-Node * extract_min(Node * minHeap, int * heapSize) {
+node_t *extract_min(node_t *minHeap, int *heapSize) {
     --*heapSize;
-    node_swap(minHeap, (minHeap + (*heapSize)*sizeof(Node)));
+    node_swap(minHeap, (minHeap + (*heapSize)*sizeof(node_t)));
 
-    return (minHeap + (*heapSize)*sizeof(Node));
+    return (minHeap + (*heapSize)*sizeof(node_t));
 }
 
 
 //Utility Functions
-Vertex * get_vertex(Vertex * vertices, int countVertices, int edgeNumber) {
+vertex_t *get_vertex(vertex_t *vertices, int countVertices, int edgeNumber) {
     if (edgeNumber > countVertices)
         return NULL;
-    return (vertices + edgeNumber*sizeof(Vertex));
+    return (vertices + edgeNumber*sizeof(vertex_t));
 }
 
 
-Node * get_node(Node * minHeap, int heapSize, Vertex * adjVertex) {
+node_t *get_node(node_t *minHeap, int heapSize, vertex_t *adjVertex) {
     for (int i = 0; i < heapSize; i++) {
-        Node * vertex = (minHeap + i*sizeof(Node));
+        node_t *vertex = (minHeap + i*sizeof(node_t));
         if (vertex->v == adjVertex)
             return vertex;
     }
@@ -62,18 +62,18 @@ Node * get_node(Node * minHeap, int heapSize, Vertex * adjVertex) {
 /*
 Goes through each adjacent vertex to the vertex passed in and links their parent and sets their key value to the weight of the edge if that vertex isn't already discovered and the weight of the edge is less than it's key value
 */
-Node * set_all_adjacent_vertices(Node * minHeap, Node * currentVertex, int heapSize, Vertex * vertices, int countVertices) {
-    Adjacency * listCursor = currentVertex->v->list; if (!listCursor) return minHeap;
+node_t *set_all_adjacent_vertices(node_t *minHeap, node_t *currentVertex, int heapSize, vertex_t *vertices, int countVertices) {
+    adjacency_t *listCursor = currentVertex->v->list; if (!listCursor) return minHeap;
 
     while (listCursor) {
-        Vertex * adjVertex = NULL;
+        vertex_t *adjVertex = NULL;
         if (listCursor->edge->to == currentVertex->v->number) {
             adjVertex = get_vertex(vertices, countVertices, listCursor->edge->from-1); if (!adjVertex) {printf("\nget_vertex function call failed\n"); return NULL;};
         } else {
             adjVertex = get_vertex(vertices, countVertices, listCursor->edge->to-1); if (!adjVertex) {printf("\nget_vertex function call failed\n"); return NULL;};
         }
 
-        Node * adjNode = get_node(minHeap, heapSize, adjVertex);
+        node_t *adjNode = get_node(minHeap, heapSize, adjVertex);
         if (adjNode && listCursor->edge->weight < adjNode->key) {
             adjNode->p = currentVertex;
             adjNode->key = listCursor->edge->weight;
@@ -87,17 +87,17 @@ Node * set_all_adjacent_vertices(Node * minHeap, Node * currentVertex, int heapS
 /*
 Used when the MST_Prim algorithm is first run. This function initializes each vertices key to infinity, except the starting vertex which is set to 0
 */
-Node * initialize_prim_heap(Vertex * vertices, int startNumber, int countVertices) {
-    Node * minHeap = malloc(countVertices*sizeof(Node)); if (!minHeap) return NULL;
+node_t *initialize_prim_heap(vertex_t *vertices, int startNumber, int countVertices) {
+    node_t *minHeap = malloc(countVertices*sizeof(node_t)); if (!minHeap) return NULL;
 
     for (int i = 0; i < countVertices; i++) {
-        Node * vertex = (minHeap + i*sizeof(Node));
-        vertex->v = (vertices + i*sizeof(Vertex));
+        node_t *vertex = (minHeap + i*sizeof(node_t));
+        vertex->v = (vertices + i*sizeof(vertex_t));
         vertex->p = NULL;
 
         if (vertex->v->number == startNumber) {
             vertex->key = 0.0;
-            node_swap(minHeap + i*sizeof(Node), minHeap);
+            node_swap(minHeap + i*sizeof(node_t), minHeap);
         } else {
             vertex->key = INFINITY;
         }
@@ -106,16 +106,16 @@ Node * initialize_prim_heap(Vertex * vertices, int startNumber, int countVertice
 }
 
 
-void tree_walk(Node * MST, int countVertices) {
+void tree_walk(node_t *MST, int countVertices) {
     float totalWeight = 0.0;
 
-    Node * vertex1 = NULL;
-    Node * vertex2 = NULL; 
+    node_t *vertex1 = NULL;
+    node_t *vertex2 = NULL; 
 
     for (int i = countVertices-1; i >= 0 ; i--) {
         for (int j = countVertices-1; j >= 0; j--) {
-            vertex1 = (MST + i*sizeof(Node));
-            vertex2 = (MST + j*sizeof(Node));
+            vertex1 = (MST + i*sizeof(node_t));
+            vertex2 = (MST + j*sizeof(node_t));
 
             if (vertex1->p == vertex2) {
                 printf("%d",vertex2->v->number);
@@ -129,18 +129,22 @@ void tree_walk(Node * MST, int countVertices) {
 }
 
 
-void freeMST(Node * MST) {
+void freeMST(node_t *MST) {
     free(MST);
 }
 
 
-void MST_Prim(Vertex * vertices, int startNumber, int countVertices) {
-    printf("MST Start\n");
-    Node * minHeap = initialize_prim_heap(vertices, startNumber, countVertices);
+node_t *MST_Prim(graph_t *g, int startNumber ) {
+    if (!g || !g->v || g->edge_count < 1 || g->vertex_count < 1 || g->type != UNDIRECTED)
+        return NULL;
+
+    vertex_t *vertices = g->v;
+    int countVertices = g->vertex_count;
+    node_t *minHeap = initialize_prim_heap(vertices, startNumber, countVertices);
     int heapSize = countVertices;
 
     while (heapSize > 0 && minHeap) {
-        Node * u = extract_min(minHeap, &heapSize); if (!u) {printf("extract_min function call failed\n"); break;};
+        node_t *u = extract_min(minHeap, &heapSize); if (!u) {printf("extract_min function call failed\n"); break;};
         minHeap = set_all_adjacent_vertices(minHeap, u, heapSize, vertices, countVertices); if (!minHeap) {printf("set_all_adjacent_vertices function call failed\n"); break;};
         build_heap(minHeap, heapSize);
     }
@@ -149,5 +153,5 @@ void MST_Prim(Vertex * vertices, int startNumber, int countVertices) {
         tree_walk(minHeap, countVertices);
     else
         printf("Something went wrong with your MST_Prim function call!\n");
-    freeMST(minHeap);
+    return minHeap;
 }

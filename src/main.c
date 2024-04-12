@@ -5,12 +5,10 @@
 
 
 int main(void) {
-    int vertex_count = 0;
-    int edge_count = 0;
-    Vertex *graph = directed_graph_initialize("vertexlist.txt", &vertex_count, &edge_count);
-    graphwalk(graph, vertex_count);
+    graph_t *graph = directed_graph_initialize("vertexlist.txt");
+    graphwalk(graph);
 
-    Node *shortest_path_tree = dijkstra(graph, vertex_count, 1);
+    node_t *shortest_path_tree = dijkstra(graph, 1);
     UNUSED(shortest_path_tree);
 
     return 0;

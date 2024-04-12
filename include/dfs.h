@@ -5,11 +5,11 @@
 
 
 typedef struct dfsnstruct {
-    Vertex * v;
-    struct dfsnstruct * p;
-} DFSNode;
+    vertex_t *v;
+    struct dfsnstruct *p;
+} dfsnode_t;
 
 
-DFSNode * DFS(Vertex * vertices, int vertexcount);
+dfsnode_t *DFS(graph_t *g);
 
 #endif

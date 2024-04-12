@@ -1,8 +1,8 @@
 #include "../include/bfs.h"
 
 
-QNode * createqnode(BFSNode * v) {
-    QNode * qnode = malloc(sizeof(QNode)); if (!qnode) return NULL;
+qnode_t *createqnode(bfsnode_t *v) {
+    qnode_t *qnode = malloc(sizeof(qnode_t)); if (!qnode) return NULL;
     qnode->next = NULL;
     qnode->v = v;
 
@@ -10,11 +10,11 @@ QNode * createqnode(BFSNode * v) {
 }
 
 
-QNode * enqueue(QNode * queue, BFSNode * v) {
-    QNode * newqnode = createqnode(v); if (!newqnode) return NULL;
+qnode_t *enqueue(qnode_t *queue, bfsnode_t *v) {
+    qnode_t *newqnode = createqnode(v); if (!newqnode) return NULL;
     if (!queue)
         return newqnode;
-    QNode * cursor = queue;
+    qnode_t *cursor = queue;
 
     while (cursor->next) {
         cursor = cursor->next;
@@ -25,9 +25,9 @@ QNode * enqueue(QNode * queue, BFSNode * v) {
 }
 
 
-QNode * removetop(QNode ** queue) {
+qnode_t *removetop(qnode_t **queue) {
     if (*queue) {
-        QNode * temp = *queue;
+        qnode_t *temp = *queue;
         if ((*queue)->next) {
             *queue = (*queue)->next;
         }
@@ -38,34 +38,35 @@ QNode * removetop(QNode ** queue) {
 }
 
 
-BFSNode * initializeDFSTree(Vertex * vertices, int vertexcount) {
-    BFSNode * tree = malloc(sizeof(BFSNode)*vertexcount); if (!tree) return NULL;
+bfsnode_t *initializeDFSTree(vertex_t *vertices, int vertexcount) {
+    bfsnode_t *tree = malloc(sizeof(bfsnode_t)*vertexcount); if (!tree) return NULL;
     for (int i = 0; i < vertexcount; i++) {
-        (tree + i*sizeof(BFSNode))->v = (vertices + i*sizeof(Vertex));
-        (tree + i*sizeof(BFSNode))->color = WHITE;
-        (tree + i*sizeof(BFSNode))->d = INT_MAX;
-        (tree + i*sizeof(BFSNode))->p = NULL;
+        (tree + i*sizeof(bfsnode_t))->v = (vertices + i*sizeof(vertex_t));
+        (tree + i*sizeof(bfsnode_t))->color = WHITE;
+        (tree + i*sizeof(bfsnode_t))->d = INT_MAX;
+        (tree + i*sizeof(bfsnode_t))->p = NULL;
     }    
 
     return tree;
 }
 
 
-BFSNode * BFS(Vertex * vertices, int vertexcount, int startnumber) {
-    printf("BFS Start\n");
-    BFSNode * tree = initializeDFSTree(vertices, vertexcount); if (!tree) return NULL;
-    QNode * queue = NULL;
-    queue = enqueue(queue, (tree + (startnumber-1)*sizeof(BFSNode)));
+bfsnode_t *BFS(graph_t *g, int startnumber) {
+    vertex_t *vertices = g->v;
+    int vertexcount = g->vertex_count;
+    bfsnode_t *tree = initializeDFSTree(vertices, vertexcount); if (!tree) return NULL;
+    qnode_t *queue = NULL;
+    queue = enqueue(queue, (tree + (startnumber-1)*sizeof(bfsnode_t)));
     queue->v->d = 0;
     int foundvertices = 0;
 
     while (queue && foundvertices != vertexcount-1) {
-        QNode * qu = removetop(&queue);
-        BFSNode * u = qu->v;
+        qnode_t *qu = removetop(&queue);
+        bfsnode_t *u = qu->v;
 
-        Adjacency * cursor = u->v->list;
+        adjacency_t *cursor = u->v->list;
         while (cursor) {
-            BFSNode * adjacenctvertex = (tree + (cursor->edge->to-1)*sizeof(BFSNode));
+            bfsnode_t *adjacenctvertex = (tree + (cursor->edge->to-1)*sizeof(bfsnode_t));
             if (adjacenctvertex->color == WHITE) {
                 printf("Found vertex %d from vertex %d with a distance of %d from source\n", adjacenctvertex->v->number, u->v->number, u->d+1);
                 adjacenctvertex->color = GREY;

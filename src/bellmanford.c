@@ -1,30 +1,34 @@
 #include "../include/bellmanford.h"
 
 
-Node * bellmanford(Vertex * vertices, int vertexcount, int source, int * negativeloopcycle) {
-    printf("Bellmanford start\n");
-    Node * shortestpath = malloc(sizeof(Node)*vertexcount);
+node_t *bellmanford(graph_t *g, int source, int *negativeloopcycle) {   
+    if (!g || !g->v || g->edge_count < 1 || g->vertex_count < 1 || !negativeloopcycle)
+        return NULL;
+    vertex_t *vertices = g->v;
+    int vertexcount = g->vertex_count;
+
+    node_t *shortestpath = malloc(sizeof(node_t)*vertexcount);
     for (int i = 0; i < vertexcount; i++) {
-        (shortestpath + i*sizeof(Node))->key = (i == source-1) ? 0 : INFINITY;
-        (shortestpath + i*sizeof(Node))->p = NULL;
-        (shortestpath + i*sizeof(Node))->v = (vertices + i*sizeof(Vertex));
+        (shortestpath + i*sizeof(node_t))->key = (i == source-1) ? 0 : INFINITY;
+        (shortestpath + i*sizeof(node_t))->p = NULL;
+        (shortestpath + i*sizeof(node_t))->v = (vertices + i*sizeof(vertex_t));
     }
 
-    Adjacency * cursor = NULL;
+    adjacency_t *cursor = NULL;
     for (int i = 0; i < vertexcount; i++) {
-        cursor = (vertices + i*sizeof(Vertex))->list;
+        cursor = (vertices + i*sizeof(vertex_t))->list;
         while (cursor) {
-            relax(shortestpath, cursor, (shortestpath + (cursor->edge->from-1)*sizeof(Node)), (shortestpath + (cursor->edge->to-1)*sizeof(Node)));
+            relax(shortestpath, cursor, (shortestpath + (cursor->edge->from-1)*sizeof(node_t)), (shortestpath + (cursor->edge->to-1)*sizeof(node_t)));
             cursor = cursor->next;
         }
     }
     cursor = NULL;
-    Node * u = NULL, * v = NULL;
+    node_t *u = NULL, *v = NULL;
     for (int i = 0; i < vertexcount; i++) {
-        cursor = (vertices + i*sizeof(Vertex))->list;
+        cursor = (vertices + i*sizeof(vertex_t))->list;
         while (cursor) {
-            u = get_node(shortestpath, vertexcount, (vertices + (cursor->edge->from-1)*sizeof(Vertex)));
-            v = get_node(shortestpath, vertexcount, (vertices + (cursor->edge->to-1)*sizeof(Vertex)));
+            u = get_node(shortestpath, vertexcount, (vertices + (cursor->edge->from-1)*sizeof(vertex_t)));
+            v = get_node(shortestpath, vertexcount, (vertices + (cursor->edge->to-1)*sizeof(vertex_t)));
             if (v->key > u->key + cursor->edge->weight || cursor->edge->weight < 0) {
                 *negativeloopcycle = 0;
             }
@@ -33,7 +37,7 @@ Node * bellmanford(Vertex * vertices, int vertexcount, int source, int * negativ
     }
     if (*negativeloopcycle) {
         for (int i = 1; i < vertexcount; i++) {
-            printf("Shortest path weight from %d to %d is %f\n", source, (shortestpath + i*sizeof(Node))->v->number, (shortestpath + i*sizeof(Node))->key);
+            printf("Shortest path weight from %d to %d is %f\n", source, (shortestpath + i*sizeof(node_t))->v->number, (shortestpath + i*sizeof(node_t))->key);
         }
     } else 
         printf("Negative weight cycle detected\n");

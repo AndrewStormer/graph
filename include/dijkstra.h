@@ -3,7 +3,7 @@
 
 #include "mst.h"
 
-Node * relax(Node * minheap, Adjacency * adjacency, Node * u, Node * v);
-Node * dijkstra(Vertex * vertices, int vertexcount, int source);
+node_t *relax(node_t *minheap, adjacency_t *adjacency, node_t *u, node_t *v);
+node_t *dijkstra(graph_t *g, int source);
 
 #endif

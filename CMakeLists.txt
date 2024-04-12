@@ -13,7 +13,7 @@ add_library(dijkstra SHARED src/graph.c src/mst.c src/dijkstra.c)
 add_library(bellmanford SHARED src/graph.c src/mst.c src/dijkstra.c src/bellmanford.c)
 
 add_executable(${PROJECT_NAME} src/main.c)
-target_link_libraries(${PROJECT_NAME} m graph dijkstra)
+target_link_libraries(${PROJECT_NAME} m graph bfs dfs mst dijkstra bellmanford)
 
 
 

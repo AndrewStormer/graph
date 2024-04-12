@@ -25,24 +25,34 @@ typedef struct estruct {
     int from;
     int to;
     float weight;
-} Edge;
+} edge_t;
 
 
 typedef struct astruct {
-    Edge * edge;
-    struct astruct * next;
-} Adjacency;
+    edge_t *edge;
+    struct astruct *next;
+} adjacency_t;
 
 
 typedef struct vstruct {
     int number;
-    Adjacency * list;
-} Vertex;
+    adjacency_t *list;
+} vertex_t;
 
-Vertex *directed_graph_initialize(char *filename, int *vertex_count, int *edge_count);
-Vertex *undirected_graph_initialize(char *filename, int *vertex_count, int *edge_count);
+typedef enum {DIRECTED, UNDIRECTED} dir_t;
 
 
-void graphwalk(Vertex * graph, int vertexcount);
+typedef struct graph {
+    vertex_t *v;
+    int vertex_count;
+    int edge_count;
+    dir_t type;
+} graph_t;
+
+graph_t *directed_graph_initialize(char *filename);
+graph_t *undirected_graph_initialize(char *filename);
+
+
+void graphwalk(graph_t *graph);
 
 #endif
