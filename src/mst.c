@@ -85,7 +85,7 @@ node_t *set_all_adjacent_vertices(node_t *minHeap, node_t *currentVertex, int he
 
 
 /*
-Used when the MST_Prim algorithm is first run. This function initializes each vertices key to infinity, except the starting vertex which is set to 0
+Used when the mst_Prim algorithm is first run. This function initializes each vertices key to infinity, except the starting vertex which is set to 0
 */
 node_t *initialize_prim_heap(vertex_t *vertices, int startNumber, int countVertices) {
     node_t *minHeap = malloc(countVertices*sizeof(node_t)); if (!minHeap) return NULL;
@@ -106,7 +106,7 @@ node_t *initialize_prim_heap(vertex_t *vertices, int startNumber, int countVerti
 }
 
 
-void tree_walk(node_t *MST, int countVertices) {
+void tree_walk(node_t *mst, int countVertices) {
     float totalWeight = 0.0;
 
     node_t *vertex1 = NULL;
@@ -114,8 +114,8 @@ void tree_walk(node_t *MST, int countVertices) {
 
     for (int i = countVertices-1; i >= 0 ; i--) {
         for (int j = countVertices-1; j >= 0; j--) {
-            vertex1 = (MST + i*sizeof(node_t));
-            vertex2 = (MST + j*sizeof(node_t));
+            vertex1 = (mst + i*sizeof(node_t));
+            vertex2 = (mst + j*sizeof(node_t));
 
             if (vertex1->p == vertex2) {
                 printf("%d",vertex2->v->number);
@@ -125,16 +125,16 @@ void tree_walk(node_t *MST, int countVertices) {
             } 
         }
     }
-    printf("Total MST weight: %f\n", totalWeight);
+    printf("Total mst weight: %f\n", totalWeight);
 }
 
 
-void freeMST(node_t *MST) {
-    free(MST);
+void freemst(node_t *mst) {
+    free(mst);
 }
 
 
-node_t *MST_Prim(graph_t *g, int startNumber ) {
+node_t *mst_Prim(graph_t *g, int startNumber ) {
     if (!g || !g->v || g->edge_count < 1 || g->vertex_count < 1 || g->type != UNDIRECTED)
         return NULL;
 
@@ -152,6 +152,6 @@ node_t *MST_Prim(graph_t *g, int startNumber ) {
     if (minHeap)
         tree_walk(minHeap, countVertices);
     else
-        printf("Something went wrong with your MST_Prim function call!\n");
+        printf("Something went wrong with your mst_Prim function call!\n");
     return minHeap;
 }

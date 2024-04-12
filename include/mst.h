@@ -21,5 +21,5 @@ node_t *extract_min(node_t *minHeap, int *heapSize);
 node_t *set_all_adjacent_vertices(node_t *minHeap, node_t *currentVertex, int heapSize, vertex_t *vertices, int countVertices);
 node_t *get_node(node_t *minHeap, int heapSize, vertex_t *adjVertex);
 
-node_t *MST_Prim(graph_t *g, int startnumber);
+node_t *mst_Prim(graph_t *g, int startnumber);
 #endif

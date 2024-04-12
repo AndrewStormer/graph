@@ -26,6 +26,14 @@ mkdir build && cd build
 int main(void) {
     int vertex_count;
     int edge_count;
-    vertex_t *graph = directed_graph_initalize("vertexlist.txt", &vertex_count, &edge_count);
+    graph_t *dirgraph = directed_graph_initalize("vertexlist.txt");
+
+    node_t *shortest_path_tree = dijkstra(dirgraph, 1);
+    //Do something useful with your shortest paths!
+
+    graph_t *undirgraph = undirected_graph_initalize("vertexlist.txt");
+
+    node_t *prim_tree = mst_prim(undirgraph, 1);
+    //Do something useful with your mst!
 }
 ```
