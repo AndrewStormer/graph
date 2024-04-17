@@ -85,10 +85,14 @@ node_t *set_all_adjacent_vertices(node_t *minHeap, node_t *currentVertex, int he
 
 
 /*
-Used when the mst_Prim algorithm is first run. This function initializes each vertices key to infinity, except the starting vertex which is set to 0
+Used when the mst_prim algorithm is first run. This function initializes each vertices key to infinity, except the starting vertex which is set to 0
 */
 node_t *initialize_prim_heap(vertex_t *vertices, int startNumber, int countVertices) {
-    node_t *minHeap = malloc(countVertices*sizeof(node_t)); if (!minHeap) return NULL;
+    if (!vertices || startNumber < 0 || startNumber > countVertices || countVertices < 1)
+        return NULL;
+    node_t *minHeap = malloc(countVertices*sizeof(node_t)); 
+    if (!minHeap) 
+        return NULL;
 
     for (int i = 0; i < countVertices; i++) {
         node_t *vertex = (minHeap + i*sizeof(node_t));
@@ -134,7 +138,7 @@ void freemst(node_t *mst) {
 }
 
 
-node_t *mst_Prim(graph_t *g, int startNumber ) {
+node_t *mst_prim(graph_t *g, int startNumber ) {
     if (!g || !g->v || g->edge_count < 1 || g->vertex_count < 1 || g->type != UNDIRECTED)
         return NULL;
 
@@ -148,10 +152,5 @@ node_t *mst_Prim(graph_t *g, int startNumber ) {
         minHeap = set_all_adjacent_vertices(minHeap, u, heapSize, vertices, countVertices); if (!minHeap) {printf("set_all_adjacent_vertices function call failed\n"); break;};
         build_heap(minHeap, heapSize);
     }
-
-    if (minHeap)
-        tree_walk(minHeap, countVertices);
-    else
-        printf("Something went wrong with your mst_Prim function call!\n");
     return minHeap;
 }

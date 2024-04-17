@@ -2,7 +2,7 @@
 
 
 void decoderelationstring(char *buffer, int *from, int *to, float *weight) {
-    const char delim[] = " ";
+    const char delim[] = " \0\n";
     char *token;
 
     token = strtok(buffer, delim);
@@ -53,7 +53,6 @@ adjacency_t *insertadjacency(adjacency_t *list, adjacency_t *newadjacency) {
         return NULL;
 
     if (!list) {
-        list = newadjacency;
         return newadjacency;
     }
     
@@ -89,23 +88,21 @@ vertex_t *createdirectedgraph(int vertexcount, int edgecount, int *from, int *to
     vertex_t *vertices = initializevertices(vertexcount); 
     if (!vertices) 
         return NULL;
-    vertex_t *sourcevertex = NULL;
-    edge_t *adjacentedge = NULL;
-    adjacency_t *newadjacency = NULL;
+
 
     for (int i = 0; i < edgecount; i++) {
-        adjacentedge = createedge(from[i], to[i], weight[i]);
+        edge_t *adjacentedge = createedge(from[i], to[i], weight[i]);
         if (!adjacentedge)  {
             free(vertices);
             return NULL;
         }
-        newadjacency = createadjacency(adjacentedge); 
+        adjacency_t *newadjacency = createadjacency(adjacentedge); 
         if (!newadjacency)   {
             free(vertices);
             return NULL;
         }
 
-        sourcevertex = (vertices + (from[i]-1)*sizeof(vertex_t));
+        vertex_t *sourcevertex = (vertices + (from[i]-1)*sizeof(vertex_t));
         sourcevertex->list = insertadjacency(sourcevertex->list, newadjacency);
         if (!sourcevertex->list)  {
             free(vertices);
@@ -116,48 +113,42 @@ vertex_t *createdirectedgraph(int vertexcount, int edgecount, int *from, int *to
 }
 
 
-vertex_t *createundirectedgraph(int vertexcount, int edgecount, int from[], int to[], float weight[]) {
+vertex_t *createundirectedgraph(int vertexcount, int edgecount, int *from, int *to, float *weight) {
     vertex_t *vertices = initializevertices(vertexcount);
-    vertex_t *sourcevertex = NULL;
-    vertex_t *sinkvertex = NULL;
-    edge_t *adjacentedge1 = NULL;
-    edge_t *adjacentedge2 = NULL;
-    adjacency_t *newadjacency1 = NULL;
-    adjacency_t *newadjacency2 = NULL;
 
     for (int i = 0; i < edgecount; i++) {
-        adjacentedge1 = createedge(from[i], to[i], weight[i]);
+        edge_t *adjacentedge1 = createedge(from[i], to[i], weight[i]);
         if (!adjacentedge1) {
             free(vertices);
             return NULL;
         }
 
-        newadjacency1 = createadjacency(adjacentedge1); 
+        adjacency_t *newadjacency1 = createadjacency(adjacentedge1); 
         if (!newadjacency1) {
             free(vertices);
             return NULL;
         }
 
-        adjacentedge2 = createedge(from[i], to[i], weight[i]); 
+        edge_t *adjacentedge2 = createedge(from[i], to[i], weight[i]); 
         if (!adjacentedge2) {
             free(vertices);
             return NULL;
         }
 
-        newadjacency2 = createadjacency(adjacentedge1); 
+        adjacency_t *newadjacency2 = createadjacency(adjacentedge1); 
         if (!newadjacency2) {
             free(vertices);
             return NULL;
         }
 
-        sourcevertex = (vertices + (from[i]-1)*sizeof(vertex_t));
+        vertex_t *sourcevertex = (vertices + (from[i]-1)*sizeof(vertex_t));
         sourcevertex->list = insertadjacency(sourcevertex->list, newadjacency1);
         if (!sourcevertex->list) {
             free(vertices);
             return NULL;
         }
 
-        sinkvertex = (vertices + (to[i]-1)*sizeof(vertex_t));
+        vertex_t *sinkvertex = (vertices + (to[i]-1)*sizeof(vertex_t));
         sinkvertex->list = insertadjacency(sinkvertex->list, newadjacency2);
         if (!sinkvertex->list) {
             free(vertices);
@@ -185,18 +176,18 @@ graph_t *directed_graph_initialize(char *filename) {
 
     char *line = NULL;
     size_t linesize;
-    int *from = malloc((edge_count+1)*sizeof(int));
-    int *to = malloc((edge_count+1)*sizeof(int));
-    float *weight = malloc((edge_count+1)*sizeof(float));
+    int *from = malloc((edge_count)*sizeof(int));
+    int *to = malloc((edge_count)*sizeof(int));
+    float *weight = malloc((edge_count)*sizeof(float));
 
     int index = 0;
 
     getline(&line, &linesize, fp);
-    while((getline(&line, &linesize, fp) != -1) && index < edge_count) {
+    while(index < edge_count && (getline(&line, &linesize, fp) != -1)) {
         decoderelationstring(line, &from[index], &to[index], &weight[index]);
         ++index;
     }
-    
+    fclose(fp);
     graph_t *graph = malloc(sizeof(graph_t));
     if (!graph) {
         free(from);
@@ -246,6 +237,8 @@ graph_t *undirected_graph_initialize(char *filename) {
         decoderelationstring(line, &from[index], &to[index], &weight[index]);
         ++index;
     }
+    fclose(fp);
+
     graph_t *graph = malloc(sizeof(graph_t));
     if (!graph) {
         free(from);

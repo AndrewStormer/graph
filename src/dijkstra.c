@@ -35,6 +35,8 @@ node_t *dijkstra(graph_t *g, int source) {
         cursor = u->v->list;
         while (cursor) { 
             v = get_node(minheap, vertexcount, (vertices + (cursor->edge->to-1)*sizeof(vertex_t)));
+            if (!v)
+                break;
             minheap = relax(minheap, cursor, u, v);
             cursor = cursor->next;
         }
@@ -44,6 +46,5 @@ node_t *dijkstra(graph_t *g, int source) {
         printf("Shortest path weight from %d to %d is %f\n", source, (minheap + (vertexcount-i-1)*sizeof(node_t))->v->number, (minheap + (vertexcount-i-1)*sizeof(node_t))->key);
     }
 
-    free(minheap);
     return minheap;
 }

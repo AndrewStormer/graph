@@ -1,15 +1,22 @@
 #include "../include/graph.h"
 #include "../include/dijkstra.h"
-
-#define UNUSED(x) (void)(x) //Helps things compile!
+#include "../include/mst.h"
 
 
 int main(void) {
-    graph_t *graph = directed_graph_initialize("vertexlist.txt");
+    graph_t *graph = undirected_graph_initialize("vertexlist.txt");
     graphwalk(graph);
 
-    node_t *shortest_path_tree = dijkstra(graph, 1);
-    UNUSED(shortest_path_tree);
+    node_t *mst = mst_prim(graph, 1);
+    if (!mst)
+        exit(1);
+    tree_walk(mst, graph->vertex_count);
+
+    graph_t *graph2 = directed_graph_initialize("vertexlist.txt");
+    graphwalk(graph);
+    node_t *shortest_path_tree = dijkstra(graph2, 1);
+    if (!shortest_path_tree)
+        exit(1);
 
     return 0;
 }
