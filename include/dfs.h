@@ -10,6 +10,6 @@ typedef struct dfsnstruct {
 } dfsnode_t;
 
 
-dfsnode_t *DFS(graph_t *g);
+dfsnode_t *dfs(graph_t *g);
 
 #endif

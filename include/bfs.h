@@ -4,7 +4,7 @@
 #include "graph.h"
 
 
-//DFS tree
+//dfs tree
 typedef struct bfsnstruct {
     int d, color;
     vertex_t *v;
@@ -18,7 +18,7 @@ typedef struct qnstruct {
 } qnode_t;
 
 
-bfsnode_t *BFS(graph_t *g, int startnumber);
+bfsnode_t *bfs(graph_t *g, int startnumber);
 
 
 #endif

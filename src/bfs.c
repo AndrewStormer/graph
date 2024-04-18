@@ -38,7 +38,7 @@ qnode_t *removetop(qnode_t **queue) {
 }
 
 
-bfsnode_t *initializeDFSTree(vertex_t *vertices, int vertexcount) {
+bfsnode_t *initializeBFSTree(vertex_t *vertices, int vertexcount) {
     bfsnode_t *tree = malloc(sizeof(bfsnode_t)*vertexcount); if (!tree) return NULL;
     for (int i = 0; i < vertexcount; i++) {
         (tree + i*sizeof(bfsnode_t))->v = (vertices + i*sizeof(vertex_t));
@@ -51,10 +51,10 @@ bfsnode_t *initializeDFSTree(vertex_t *vertices, int vertexcount) {
 }
 
 
-bfsnode_t *BFS(graph_t *g, int startnumber) {
+bfsnode_t *bfs(graph_t *g, int startnumber) {
     vertex_t *vertices = g->v;
     int vertexcount = g->vertex_count;
-    bfsnode_t *tree = initializeDFSTree(vertices, vertexcount); if (!tree) return NULL;
+    bfsnode_t *tree = initializeBFSTree(vertices, vertexcount); if (!tree) return NULL;
     qnode_t *queue = NULL;
     queue = enqueue(queue, (tree + (startnumber-1)*sizeof(bfsnode_t)));
     queue->v->d = 0;
@@ -62,7 +62,11 @@ bfsnode_t *BFS(graph_t *g, int startnumber) {
 
     while (queue && foundvertices != vertexcount-1) {
         qnode_t *qu = removetop(&queue);
+        if (!qu)
+            break;
         bfsnode_t *u = qu->v;
+        if (!u)
+            break;
 
         adjacency_t *cursor = u->v->list;
         while (cursor) {

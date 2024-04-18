@@ -1,6 +1,8 @@
 #include "../include/graph.h"
 #include "../include/dijkstra.h"
 #include "../include/mst.h"
+#include "../include/bfs.h"
+#include "../include/dfs.h"
 
 
 int main(void) {
@@ -13,10 +15,13 @@ int main(void) {
     tree_walk(mst, graph->vertex_count);
 
     graph_t *graph2 = directed_graph_initialize("vertexlist.txt");
-    graphwalk(graph);
+    graphwalk(graph2);
     node_t *shortest_path_tree = dijkstra(graph2, 1);
     if (!shortest_path_tree)
         exit(1);
+
+    dfs(graph);
+    bfs(graph, 1);
 
     return 0;
 }

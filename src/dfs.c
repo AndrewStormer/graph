@@ -35,7 +35,7 @@ dfsnode_t *DFSvisit(dfsnode_t *tree, int index, int vertexcount,int *time, int c
 }
 
 
-dfsnode_t *DFS(graph_t *g) {
+dfsnode_t *dfs(graph_t *g) {
     if (!g || !g->v || g->edge_count < 1 || g->vertex_count < 1)
         return NULL;
 
