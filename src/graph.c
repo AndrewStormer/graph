@@ -19,7 +19,6 @@ void decoderelationstring(char *buffer, int *from, int *to, float *weight) {
     if(token) {
         *weight = atof(token);
     }
-    //printf("%d->%d %f\n", *from, *to, *weight);
 }
 
 
@@ -221,7 +220,6 @@ graph_t *undirected_graph_initialize(char *filename) {
 
     fscanf(fp, "%d", &vertex_count);
     fscanf(fp, "%d", &edge_count);
-
 
 
     char *line = NULL;

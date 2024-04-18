@@ -37,3 +37,11 @@ int main(void) {
     //Do something useful with your mst!
 }
 ```
+
+## To Do:
+
+- Free memory allocated
+
+- More refactor
+
+- More comments
